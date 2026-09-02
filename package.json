@@ -6,10 +6,10 @@
   "author": "David Díaz <daviddrsch@gmail.com>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/daviddrsch/shiny.cov-playwright"
+    "url": "https://github.com/davidrsch/shiny.cov-playwright"
   },
   "bugs": {
-    "url": "https://github.com/daviddrsch/shiny.cov-playwright/issues"
+    "url": "https://github.com/davidrsch/shiny.cov-playwright/issues"
   },
   "main": "src/fixtures.js",
   "exports": {
