@@ -1,0 +1,44 @@
+{
+  "name": "shiny.cov-playwright",
+  "version": "0.0.0-9000",
+  "description": "Playwright adapter for the shiny.cov R package — UI and server coverage for R Shiny apps",
+  "license": "MIT",
+  "author": "David Díaz <daviddrsch@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/daviddrsch/shiny.cov-playwright"
+  },
+  "bugs": {
+    "url": "https://github.com/daviddrsch/shiny.cov-playwright/issues"
+  },
+  "main": "src/fixtures.js",
+  "exports": {
+    ".": "./src/fixtures.js",
+    "./fixtures": "./src/fixtures.js",
+    "./discover": "./src/discover.js",
+    "./global-teardown": "./src/global-teardown.js"
+  },
+  "files": [
+    "src/"
+  ],
+  "scripts": {
+    "test": "node --test test/*.test.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "peerDependencies": {
+    "@playwright/test": ">=1.50.0"
+  },
+  "devDependencies": {
+    "@playwright/test": ">=1.50.0"
+  },
+  "keywords": [
+    "shiny",
+    "coverage",
+    "playwright",
+    "shinytest2",
+    "r",
+    "testing"
+  ]
+}

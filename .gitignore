@@ -1,0 +1,23 @@
+# npm
+node_modules/
+package-lock.json
+
+# Playwright test artifacts
+test-results/
+playwright-report/
+blob-report/
+test/live/**/.tmp-app/
+
+# shiny.cov coverage output, written by consuming apps during dev/testing
+.shiny.cov/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db

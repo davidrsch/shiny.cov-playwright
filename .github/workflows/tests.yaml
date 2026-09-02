@@ -1,0 +1,59 @@
+# Run shiny.cov-playwright's own unit tests (fixtures.js/interaction-logging.js
+# logic against Playwright test doubles),
+# and separately its live-browser suite (test/live) against a real Chromium
+# and a real, booted Shiny app.
+#
+# Lives inside this package's own directory (not a shared monorepo
+# .github/workflows/) so it comes along automatically once this package is
+# split out into its own repo -- no working-directory needed since the
+# package is the repo root here.
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+name: playwright-package-tests
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - run: npm install --no-audit --no-fund
+
+      - run: npm test
+
+  live:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # test/live/real-shiny-app.spec.js boots test/live/fixture-app (plain
+      # shiny::runApp(), no dependency on the shiny.cov R package itself --
+      # see test/live/playwright.config.js), so this only needs Rscript and
+      # the shiny package, not a full R-CMD-check-style environment.
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      - name: Install shiny (R)
+        run: Rscript -e 'install.packages("shiny")'
+
+      - run: npm install --no-audit --no-fund
+
+      - run: npx playwright install --with-deps chromium
+
+      - run: npx playwright test -c test/live
