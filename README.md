@@ -46,7 +46,8 @@ export default defineConfig({
       SHINYCOV_SERVER_APP_DIR: appDir,
       SHINYCOV_SERVER_PORT: String(port),
       SHINYCOV_OUTPUT: `${appDir}/.shiny.cov/coverage.rds`,
-      R_COVR: '1'
+      R_COVR: '1',
+      SHINYCOV_SOURCE: 'playwright'
     },
     // A newer webServer feature (added in @playwright/test 1.50.0) --
     // reproduces the same 5s-SIGTERM-then-SIGKILL shutdown
