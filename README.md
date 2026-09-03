@@ -115,7 +115,7 @@ Any other Locator/Page method call (`.waitFor()`, `.count()`, `.boundingBox()`, 
 
 - **Auto-logging via a Proxy-wrapped `page` fixture.** `test.extend()` overrides the built-in `page` fixture (the documented mechanism for this) with a `Proxy` that observes real Locator/Page method calls and logs the recognized ones, preserving `this` binding on every call so Playwright's own auto-wait/retry/tracing -- which live inside the real methods, called normally -- are untouched. Handles the recursive-Locator-wrapping problem: `.filter()`/`.first()`/`.nth()`/`.locator()` each return a *new* Locator, so a chained call like `page.locator('#list').filter({...}).click()` is re-wrapped at every hop, not just the first.
 
-  An alternative was considered and rejected: parsing Playwright Reporter `onStepEnd` `TestStep.title` strings instead of wrapping. Playwright's `TestStep.title` does embed selector/value, but is documented only as a "user-friendly" string, not a stable format, and framework/lifecycle steps share the same `pw:api` step category as real actions. Observing real call arguments directly avoids parsing a string that was never meant to be machine-read.
+  Parsing Playwright Reporter `onStepEnd` `TestStep.title` strings instead of wrapping would be unreliable: `TestStep.title` does embed selector/value, but is documented only as a "user-friendly" string, not a stable format, and framework/lifecycle steps share the same `pw:api` step category as real actions. Observing real call arguments directly avoids parsing a string that was never meant to be machine-read.
 
 - **Multi-worker-safe logging.** Workers are separate OS processes that can't communicate (Playwright's own documented model) -- each worker accumulates its own entries in memory and flushes them to `.shiny.cov/interactions-worker-{workerIndex}.json` after every test (plus once more at worker teardown as a final safety net), no cross-worker coordination. Flushing per-test rather than only at worker teardown bounds a hard-killed worker's (timeout, OOM, a native browser crash) data loss to the one test that was in flight. `globalTeardown` (this package's `./global-teardown` export) merges every worker's file into one `interactions.json` after the whole run finishes, then deletes the per-worker files -- the same per-worker-file-then-merge shape Playwright's own blob reporter uses for test results. It also warns if the number of workers that reported any data looks low relative to the run's configured worker count, a heuristic signal for a worker that may have crashed before flushing anything.
 
@@ -123,7 +123,7 @@ Any other Locator/Page method call (`.waitFor()`, `.count()`, `.boundingBox()`, 
 
 - **No `server.js` equivalent.** Playwright's `webServer` config already implements spawn, readiness polling, and graceful-then-forceful shutdown natively -- see the config block above.
 
-- Peer dependency floor is `@playwright/test >= 1.50.0`, the version that introduced `webServer.gracefulShutdown` (confirmed by diffing `types/test.d.ts` across published versions; if you're pinning tighter for another reason, this is the actual functional floor this package's documented config block relies on).
+- Peer dependency floor is `@playwright/test >= 1.50.0`, the version that introduced `webServer.gracefulShutdown` -- the actual functional floor this package's documented config block relies on.
 
 ## License
 

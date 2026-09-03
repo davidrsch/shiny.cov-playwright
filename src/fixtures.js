@@ -127,13 +127,13 @@ const test = baseTest.extend({
   // tracing internals -- which live inside those real methods, called
   // normally -- are untouched.
   //
-  // Considered and rejected: parsing Reporter onStepEnd's TestStep.title
-  // strings instead of wrapping. Playwright's TestStep.title does embed
-  // selector/value, but is documented only as a "user-friendly" string,
-  // not a stable format, and framework/lifecycle steps (e.g. "Launch
-  // browser") share the same pw:api step category as real actions -- this
-  // observes real call arguments directly instead of regex-parsing a
-  // string not meant to be machine-read.
+  // Parsing Reporter onStepEnd's TestStep.title strings instead of
+  // wrapping would be unreliable: TestStep.title does embed selector/value,
+  // but is documented only as a "user-friendly" string, not a stable
+  // format, and framework/lifecycle steps (e.g. "Launch browser") share
+  // the same pw:api step category as real actions -- this observes real
+  // call arguments directly instead of regex-parsing a string not meant
+  // to be machine-read.
   // `isPageRoot: true` marks this as the actual page object, not merely a
   // Locator that hasn't been assigned a selector yet -- see
   // interaction-logging.js's wrapWithLogging() doc for why that distinction
